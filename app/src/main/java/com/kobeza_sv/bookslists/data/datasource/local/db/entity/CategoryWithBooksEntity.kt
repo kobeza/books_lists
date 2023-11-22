@@ -3,12 +3,12 @@ package com.kobeza_sv.bookslists.data.datasource.local.db.entity
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class CategoryWithBookDetails(
+data class CategoryWithBooksEntity(
     @Embedded
-    val category: Category,
+    val category: CategoryEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "categoryId"
     )
-    val booksDetail:List<BookDetail>
+    val books:List<BookEntity>
 )

@@ -5,20 +5,23 @@ import androidx.room.Room
 import com.kobeza_sv.bookslists.data.datasource.local.db.BooksListsDataBase
 import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.BooksListsApi
 import com.kobeza_sv.bookslists.data.repository.BooksListsRepositoryImpl
-import com.kobeza_sv.bookslists.domain.BooksListsRepository
+import com.kobeza_sv.bookslists.domain.repository.BooksListsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataModule {
+class DataModule {
 
     @Singleton
     @Provides
@@ -36,18 +39,46 @@ abstract class DataModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(retrofit: Retrofit): Retrofit =
-        Retrofit.Builder()
-            .baseUrl("https://my-json-server.typicode.com/KeskoSenukaiDigital/assignment/")
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+
+    @Provides
+    internal fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        val requestTimeout: Long = 15
+        val builder = OkHttpClient.Builder()
+            .connectTimeout(requestTimeout, TimeUnit.SECONDS)
+            .readTimeout(requestTimeout, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+        return builder.build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://my-json-server.typicode.com/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
+    }
 
     @Provides
     @Singleton
     fun provideBooksListsApi(retrofit: Retrofit): BooksListsApi =
         retrofit.create(BooksListsApi::class.java)
 
-    @Binds
-    @Singleton
-    abstract fun bindBooksListsRepository(repository: BooksListsRepositoryImpl): BooksListsRepository
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface BindsModule {
+        @Binds
+        @Singleton
+        abstract fun bindBooksListsRepository(repository: BooksListsRepositoryImpl): BooksListsRepository
+    }
 }

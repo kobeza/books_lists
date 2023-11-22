@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class BookDetail(
+data class BookDetailEntity(
     @PrimaryKey
     val id: Long,
     val categoryId: Long,

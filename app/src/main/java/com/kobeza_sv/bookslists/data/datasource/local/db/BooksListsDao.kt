@@ -1,19 +1,24 @@
 package com.kobeza_sv.bookslists.data.datasource.local.db
 
 import androidx.room.Dao
+import androidx.room.Query
 import androidx.room.Upsert
-import com.kobeza_sv.bookslists.data.datasource.local.db.entity.Book
-import com.kobeza_sv.bookslists.data.datasource.local.db.entity.BookDetail
-import com.kobeza_sv.bookslists.data.datasource.local.db.entity.Category
+import com.kobeza_sv.bookslists.data.datasource.local.db.entity.BookDetailEntity
+import com.kobeza_sv.bookslists.data.datasource.local.db.entity.BookEntity
+import com.kobeza_sv.bookslists.data.datasource.local.db.entity.CategoryEntity
+import com.kobeza_sv.bookslists.data.datasource.local.db.entity.CategoryWithBooksEntity
 
 @Dao
 interface BooksListsDao {
     @Upsert
-    suspend fun upsertBook(book: Book)
+    suspend fun upsertBooks(books: List<BookEntity>)
 
     @Upsert
-    suspend fun upsertBookDetail(bookDetail: BookDetail)
+    suspend fun upsertBookDetail(bookDetail: BookDetailEntity)
 
     @Upsert
-    suspend fun upsertCategory(category: Category)
+    suspend fun upsertCategories(categories: List<CategoryEntity>)
+
+    @Query("SELECT * FROM CategoryEntity")
+    suspend fun getCategoryWithBooks(): List<CategoryWithBooksEntity>
 }
