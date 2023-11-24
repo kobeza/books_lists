@@ -2,6 +2,7 @@ package com.kobeza_sv.bookslists.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.kobeza_sv.bookslists.BuildConfig
 import com.kobeza_sv.bookslists.data.datasource.local.db.BooksListsDataBase
 import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.BooksListsApi
 import com.kobeza_sv.bookslists.data.repository.BooksListsRepositoryImpl
@@ -49,7 +50,7 @@ class DataModule {
     internal fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-        val requestTimeout: Long = 15
+        val requestTimeout: Long = 30
         val builder = OkHttpClient.Builder()
             .connectTimeout(requestTimeout, TimeUnit.SECONDS)
             .readTimeout(requestTimeout, TimeUnit.SECONDS)
@@ -63,7 +64,7 @@ class DataModule {
         okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://my-json-server.typicode.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

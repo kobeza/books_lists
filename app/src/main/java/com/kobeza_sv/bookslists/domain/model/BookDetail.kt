@@ -1,5 +1,9 @@
 package com.kobeza_sv.bookslists.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class BookDetail(
     val id: Long,
     val categoryId: Long,
@@ -9,4 +13,4 @@ data class BookDetail(
     val title: String,
     val img: String,
     val description: String,
-)
+):Parcelable

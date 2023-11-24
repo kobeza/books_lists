@@ -1,5 +1,6 @@
 package com.kobeza_sv.bookslists.data.datasource.remote.retrofit
 
+import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.response.BookDetailResponse
 import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.response.BookResponse
 import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.response.CategoryResponse
 import retrofit2.http.GET
@@ -15,7 +16,7 @@ interface BooksListsApi {
     @GET(BOOK_DETAIL)
     suspend fun getBookDetail(
         @Path("bookId") bookId: Long,
-    ): List<CategoryResponse>
+    ): BookDetailResponse
 
     companion object {
         private const val BOOKS = "KeskoSenukaiDigital/assignment/books"

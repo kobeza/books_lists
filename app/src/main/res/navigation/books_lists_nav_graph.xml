@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/books_lists_nav_graph"
+    app:startDestination="@id/all_categories">
+
+    <fragment
+        android:id="@+id/all_categories"
+        android:name="com.kobeza_sv.bookslists.presentation.allcategories.AllCategoriesFragment"
+        tools:layout="@layout/fragment_all_categories">
+        <action
+            android:id="@+id/action_all_categories_to_selected_category"
+            app:destination="@id/selected_category">
+            <argument
+                android:name="category_id"
+                app:argType="long" />
+        </action>
+        <action
+            android:id="@+id/action_all_categories_to_book_details"
+            app:destination="@id/book_details">
+            <argument
+                android:name="book_id"
+                app:argType="long" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/selected_category"
+        android:name="com.kobeza_sv.bookslists.presentation.selctedcategory.SelectedCategoryFragment"
+        tools:layout="@layout/fragment_selected_category">
+        <argument
+            android:name="category_id"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_selected_category_to_book_details"
+            app:destination="@id/book_details">
+            <argument
+                android:name="book_id"
+                app:argType="long" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/book_details"
+        android:name="com.kobeza_sv.bookslists.presentation.bookdetail.BookDetailFragment"
+        tools:layout="@layout/fragment_book_details">
+        <argument
+            android:name="book_id"
+            app:argType="long" />
+    </fragment>
+
+</navigation>

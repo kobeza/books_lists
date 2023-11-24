@@ -58,18 +58,3 @@ inline fun <V : Any?, U : Any?> Result<V>.mapSuccess(transform: (V) -> U): Resul
     } catch (ex: Throwable) {
         Result.Error(ex)
     }
-
-inline fun <V : Any?, U : Any?> Result<V>.map(transform: (V?) -> U): Result<U> =
-    try {
-        when (this) {
-            is Result.Success -> Result.Success(transform(data))
-            is Result.Error -> Result.Error(
-                exception,
-                transform(data)
-            )
-
-            is Result.Loading -> Result.Loading(transform(data))
-        }
-    } catch (ex: Throwable) {
-        Result.Error(ex)
-    }

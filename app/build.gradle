@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -23,6 +25,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"https://my-json-server.typicode.com/\"")
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://my-json-server.typicode.com/\"")
         }
     }
     compileOptions {
@@ -37,6 +43,9 @@ android {
     }
     viewBinding {
         enabled = true
+    }
+    buildFeatures {
+        buildConfig true
     }
 }
 
@@ -65,7 +74,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     //hilt
-    def hilt_version = "2.44"
+    def hilt_version = "2.48"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
@@ -74,4 +83,20 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
+    //ktx
+    def ktx_version = "1.6.2"
+    implementation "androidx.core:core-ktx:$ktx_version"
+    implementation "androidx.fragment:fragment-ktx:$ktx_version"
+    implementation "androidx.activity:activity-ktx:$ktx_version"
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+    //swipe
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+
+    // Navigation
+    def nav_version = "2.7.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 }

@@ -4,9 +4,11 @@ import com.kobeza_sv.bookslists.data.datasource.local.db.entity.BookDetailEntity
 import com.kobeza_sv.bookslists.data.datasource.local.db.entity.BookEntity
 import com.kobeza_sv.bookslists.data.datasource.local.db.entity.CategoryEntity
 import com.kobeza_sv.bookslists.data.datasource.local.db.entity.CategoryWithBooksEntity
+import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.response.BookDetailResponse
 import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.response.BookResponse
 import com.kobeza_sv.bookslists.data.datasource.remote.retrofit.response.CategoryResponse
 import com.kobeza_sv.bookslists.domain.model.Book
+import com.kobeza_sv.bookslists.domain.model.BookDetail
 import com.kobeza_sv.bookslists.domain.model.Category
 import com.kobeza_sv.bookslists.domain.model.CategoryWithBooks
 
@@ -17,7 +19,7 @@ fun BookEntity.toModel() = Book(
     img = img,
 )
 
-fun BookDetailEntity.toModel() = BookDetailEntity(
+fun BookDetailEntity.toModel() = BookDetail(
     id = id,
     categoryId = categoryId,
     isbn = isbn,
@@ -38,6 +40,7 @@ fun CategoryWithBooksEntity.toModel() = CategoryWithBooks(
     books = books.map { it.toModel() }
 )
 
+@JvmName("CategoryWithBooksEntitiesToModel")
 fun List<CategoryWithBooksEntity>.toModel() = map {
     it.toModel()
 }
@@ -51,7 +54,7 @@ fun CategoryResponse.toEntity() = CategoryEntity(
     title = title.orEmpty(),
 )
 
-@JvmName("BookResponses_toEntity")
+@JvmName("BookResponsesToEntity")
 fun List<BookResponse>.toEntity() = map {
     it.toEntity()
 }
@@ -63,6 +66,41 @@ fun BookResponse.toEntity() = BookEntity(
     img = img.orEmpty(),
 )
 
-private fun Long?.getOrDefault() = this ?: LONG_DEFAULT_VALUE
+@JvmName("BookDetailResponsesToEntity")
+fun List<BookDetailResponse>.toEntity() = map {
+    it.toEntity()
+}
 
+fun BookDetailResponse.toEntity() = BookDetailEntity(
+    id = id.getOrDefault(),
+    categoryId = categoryId.getOrDefault(),
+    isbn = isbn.orEmpty(),
+    publicationDate = publicationDate.orEmpty(),
+    author = author.orEmpty(),
+    title = title.orEmpty(),
+    img = img.orEmpty(),
+    description = description.orEmpty(),
+)
+
+fun List<BookDetailResponse>.toModel() = map {
+    it.toModel()
+}
+
+fun BookDetailResponse.toModel() = BookDetail(
+    id = id.getOrDefault(),
+    categoryId = categoryId.getOrDefault(),
+    isbn = isbn.orEmpty(),
+    publicationDate = publicationDate.orEmpty(),
+    author = author.orEmpty(),
+    title = title.orEmpty(),
+    img = img.orEmpty(),
+    description = description.orEmpty(),
+)
+
+@JvmName("BookDetailEntityToModel")
+fun List<BookDetailEntity>.toModel() = map {
+    it.toModel()
+}
+
+private fun Long?.getOrDefault() = this ?: LONG_DEFAULT_VALUE
 private const val LONG_DEFAULT_VALUE = -1L
