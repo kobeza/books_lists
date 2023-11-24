@@ -23,7 +23,7 @@ Hello! Welcome to my "Books Lists App" project. This application organizes and d
 
 ## Configuration
 
-There's no need for special configuration in the application. All required dependencies are in the `build.gradle` file.
+Android Studio Giraffe | 2022.3.1 or above. All other required dependencies are in the `build.gradle` file.
 
 ## Usage
 
